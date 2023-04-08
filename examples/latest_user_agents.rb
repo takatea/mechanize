@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mechanize'
 
 # TODO: Chrome で一旦
@@ -10,7 +12,7 @@ class LatestUserAgents
   end
 
   def edge
-    page = @agent.get(BASE_URL + '/edge')
+    page = @agent.get("#{BASE_URL}/edge")
 
     windows_dom = page.css("h2:contains('Latest Edge on Windows User Agents')")
     @user_agents[:edge] = {
@@ -19,7 +21,7 @@ class LatestUserAgents
   end
 
   def firefox
-    page = @agent.get(BASE_URL + '/firefox')
+    page = @agent.get("#{BASE_URL}/firefox")
 
     desktop_dom = page.css("h2:contains('Latest Firefox on Desktop User Agents')")
     table_dom = desktop_dom.css('+ .listing-of-useragents')
@@ -32,7 +34,7 @@ class LatestUserAgents
   end
 
   def safari
-    page = @agent.get(BASE_URL + '/safari')
+    page = @agent.get("#{BASE_URL}/safari")
 
     macOS_dom = page.css("h2:contains('Latest Safari on macOS User Agents')")
     iOS_dom = page.css("h2:contains('Latest Safari on iOS User Agents')")
@@ -45,7 +47,7 @@ class LatestUserAgents
   end
 
   def chrome
-    page = @agent.get(BASE_URL + '/chrome')
+    page = @agent.get("#{BASE_URL}/chrome")
 
     windows_dom = page.css("h2:contains('Latest Chrome on Windows 10 User Agents')")
     linux_dom = page.css("h2:contains('Latest Chrome on Linux User Agents')")
