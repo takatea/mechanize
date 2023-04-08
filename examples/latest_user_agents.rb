@@ -36,32 +36,29 @@ class LatestUserAgents
         page = @agent.get(BASE_URL + "/safari")
 
         macOS_dom = page.css("h2:contains('Latest Safari on macOS User Agents')")
-        macOS = { macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text }
         iOS_dom = page.css("h2:contains('Latest Safari on iOS User Agents')")
-        iOS = { 
+
+        @user_agents[:safari] = {
+            macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text,
             iphone: iOS_dom.css("+ .listing-of-useragents .code")[0].text,
             ipad: iOS_dom.css("+ .listing-of-useragents .code")[1].text,
         }
-
-        @user_agents[:safari] = {**macOS, **iOS}
     end
 
     def chrome
         page = @agent.get(BASE_URL + "/chrome")
 
         windows_dom = page.css("h2:contains('Latest Chrome on Windows 10 User Agents')")
-        windows = { windows: windows_dom.css("+ .listing-of-useragents .code").first.text }
-
         linux_dom = page.css("h2:contains('Latest Chrome on Linux User Agents')")
-        linux = { linux: linux_dom.css("+ .listing-of-useragents .code").first.text }
-
         macOS_dom = page.css("h2:contains('Latest Chrome on macOS User Agents')")
-        macOS = { macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text }
-
         android_dom = page.css("h2:contains('Latest Chrome on Android User Agents')")
-        android = { android: android_dom.css("+ .listing-of-useragents .code").first.text }
 
-        @user_agents[:chrome] = {**windows, **linux, **macOS, **android}
+        @user_agents[:chrome] = {
+            windows: windows_dom.css("+ .listing-of-useragents .code").first.text,
+            linux: linux_dom.css("+ .listing-of-useragents .code").first.text,
+            macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text,
+            android: android_dom.css("+ .listing-of-useragents .code").first.text
+        }
     end
 end
 
