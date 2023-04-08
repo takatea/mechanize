@@ -25,27 +25,23 @@ class LatestUserAgents # rubocop:todo Style/Documentation
     desktop_dom = page.css("h2:contains('Latest Firefox on Desktop User Agents')")
     table_dom = desktop_dom.css('+ .listing-of-useragents')
 
-    windows = { windows: table_dom.css('td:contains("Windows")').css('+ td .code').text }
-    macOS = { macOS: table_dom.css('td:contains("Macos")').css('+ td .code').text } # rubocop:todo Naming/VariableName
-    linux = { linux: table_dom.css('td:contains("Linux")').css("+ td .code:contains('Ubuntu; Linux x86_64')").text }
-
-    @user_agents[:firefox] = { **windows, **linux, **macOS } # rubocop:todo Naming/VariableName
+    @user_agents[:firefox] = {
+      windows: table_dom.css('td:contains("Windows")').css('+ td .code').text,
+      macOS: table_dom.css('td:contains("Macos")').css('+ td .code').text,
+      linux: table_dom.css('td:contains("Linux")').css("+ td .code:contains('Ubuntu; Linux x86_64')").text
+    }
   end
 
   def safari
     page = @agent.get("#{BASE_URL}/safari")
 
-    macOS_dom = page.css("h2:contains('Latest Safari on macOS User Agents')") # rubocop:todo Naming/VariableName
-    iOS_dom = page.css("h2:contains('Latest Safari on iOS User Agents')") # rubocop:todo Naming/VariableName
+    macos_dom = page.css("h2:contains('Latest Safari on macOS User Agents')")
+    ios_dom = page.css("h2:contains('Latest Safari on iOS User Agents')")
 
     @user_agents[:safari] = {
-      macOS: macOS_dom.css('+ .listing-of-useragents .code').first.text, # rubocop:todo Naming/VariableName
-      # rubocop:todo Naming/VariableName
-      iphone: iOS_dom.css('+ .listing-of-useragents').css("tr:contains('Iphone') .code").text,
-      # rubocop:enable Naming/VariableName
-      # rubocop:todo Naming/VariableName
-      ipad: iOS_dom.css('+ .listing-of-useragents').css("tr:contains('Ipad') .code").text
-      # rubocop:enable Naming/VariableName
+      mac_os: macos_dom.css('+ .listing-of-useragents .code').first.text,
+      iphone: ios_dom.css('+ .listing-of-useragents').css("tr:contains('Iphone') .code").text,
+      ipad: ios_dom.css('+ .listing-of-useragents').css("tr:contains('Ipad') .code").text
     }
   end
 
@@ -54,13 +50,13 @@ class LatestUserAgents # rubocop:todo Style/Documentation
 
     windows_dom = page.css("h2:contains('Latest Chrome on Windows 10 User Agents')")
     linux_dom = page.css("h2:contains('Latest Chrome on Linux User Agents')")
-    macOS_dom = page.css("h2:contains('Latest Chrome on macOS User Agents')") # rubocop:todo Naming/VariableName
+    macos_dom = page.css("h2:contains('Latest Chrome on macOS User Agents')")
     android_dom = page.css("h2:contains('Latest Chrome on Android User Agents')")
 
     @user_agents[:chrome] = {
       windows: windows_dom.css('+ .listing-of-useragents .code').first.text,
       linux: linux_dom.css('+ .listing-of-useragents .code').first.text,
-      macOS: macOS_dom.css('+ .listing-of-useragents .code').first.text, # rubocop:todo Naming/VariableName
+      mac_os: macos_dom.css('+ .listing-of-useragents .code').first.text,
       android: android_dom.css('+ .listing-of-useragents .code').first.text
     }
   end
