@@ -52,17 +52,10 @@ class LatestUserAgents
         macOS_dom = page.css("h2:contains('Latest Chrome on macOS User Agents')")
         macOS = { macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text }
 
-        # NOTE: maybe typo :iOS Android
-        iOS_dom = page.css("h2:contains('Latest Chrome on iOS Android User Agents')")
-        iOS = { 
-            iphone: iOS_dom.css("+ .listing-of-useragents .code")[0].text,
-            ipad: iOS_dom.css("+ .listing-of-useragents .code")[1].text,
-        }
-        
         android_dom = page.css("h2:contains('Latest Chrome on Android User Agents')")
         android = { android: android_dom.css("+ .listing-of-useragents .code").first.text }
 
-        @user_agents[:chrome] = {**windows, **linux, **macOS, **iOS, **android}
+        @user_agents[:chrome] = {**windows, **linux, **macOS, **android}
     end
 end
 
