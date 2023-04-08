@@ -10,6 +10,26 @@ class LatestUserAgents
         @user_agents = {}
     end
 
+    def edge
+    end
+
+    def firefox
+        page = @agent.get(BASE_URL + "/firefox")
+        desktop_dom = page.css('h2').find { |dom| "Latest Firefox on Desktop User Agents".include? dom }
+        table_dom = desktop_dom.css('+ .listing-of-useragents')
+
+        windows = { windows: table_dom.css('td:contains("Windows")').css("+ td .code").text }
+        macOS = { macOS: table_dom.css('td:contains("Macos")').css("+ td .code").text }
+
+        linux_doms = table_dom.css('td:contains("Linux")').css("+ td .code")
+        linux = { linux: linux_doms.find{ |dom | dom.text.include? "Ubuntu; Linux x86_64" }.text }
+
+        @user_agents[:firefox] = {**windows, **linux, **macOS}
+    end
+
+    def safari
+    end
+
     def chrome
         page = @agent.get(BASE_URL + "/chrome")
 
@@ -38,3 +58,5 @@ end
 
 agent = LatestUserAgents.new
 agent.chrome.each { |key, value|  p "#{key}: #{value}" } 
+sleep 1
+agent.firefox.each { |key, value|  p "#{key}: #{value}" } 
