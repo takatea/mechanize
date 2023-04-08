@@ -11,6 +11,12 @@ class LatestUserAgents
     end
 
     def edge
+        page = @agent.get(BASE_URL + "/edge")
+
+        windows_dom = page.css("h2:contains('Latest Edge on Windows User Agents')")
+        @user_agents[:edge] = {
+            windows: windows_dom.css("+ .listing-of-useragents .code").first.text
+        }
     end
 
     def firefox
@@ -71,3 +77,7 @@ sleep 1
 
 puts "====== Safari ======"
 agent.safari.each { |key, value|  p "#{key}: #{value}" } 
+sleep 1
+
+puts "====== Edge ======"
+agent.edge.each { |key, value|  p "#{key}: #{value}" } 
