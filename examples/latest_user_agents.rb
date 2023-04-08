@@ -40,8 +40,8 @@ class LatestUserAgents
 
         @user_agents[:safari] = {
             macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text,
-            iphone: iOS_dom.css("+ .listing-of-useragents .code")[0].text,
-            ipad: iOS_dom.css("+ .listing-of-useragents .code")[1].text,
+            iphone: iOS_dom.css("+ .listing-of-useragents").css("tr:contains('Iphone') .code").text,
+            ipad: iOS_dom.css("+ .listing-of-useragents").css("tr:contains('Ipad') .code").text,
         }
     end
 
