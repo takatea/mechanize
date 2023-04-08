@@ -27,6 +27,17 @@ class LatestUserAgents
     end
 
     def safari
+        page = @agent.get(BASE_URL + "/safari")
+
+        macOS_dom = page.css("h2:contains('Latest Safari on macOS User Agents')")
+        macOS = { macOS: macOS_dom.css("+ .listing-of-useragents .code").first.text }
+        iOS_dom = page.css("h2:contains('Latest Safari on iOS User Agents')")
+        iOS = { 
+            iphone: iOS_dom.css("+ .listing-of-useragents .code")[0].text,
+            ipad: iOS_dom.css("+ .listing-of-useragents .code")[1].text,
+        }
+
+        @user_agents[:safari] = {**macOS, **iOS}
     end
 
     def chrome
@@ -56,6 +67,14 @@ class LatestUserAgents
 end
 
 agent = LatestUserAgents.new
+
+puts "====== Chrome ======"
 agent.chrome.each { |key, value|  p "#{key}: #{value}" } 
 sleep 1
+
+puts "====== Firefox ======"
 agent.firefox.each { |key, value|  p "#{key}: #{value}" } 
+sleep 1
+
+puts "====== Safari ======"
+agent.safari.each { |key, value|  p "#{key}: #{value}" } 
