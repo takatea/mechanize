@@ -4,11 +4,37 @@ require 'mechanize'
 
 BASE_URL = 'https://www.whatismybrowser.com/guides/the-latest-user-agent'
 
-class LatestUserAgents # rubocop:todo Style/Documentation
+class LatestUserAgents
+  attr_reader :user_agents
+
   def initialize
     @agent = Mechanize.new.tap { |a| a.user_agent_alias = 'Mac Firefox' }
     @user_agents = {}
   end
+
+  def run
+    sleep_time = 1
+
+    puts 'get chrome UA...'
+    chrome
+    puts "sleeping... (#{sleep_time}s)"
+    sleep 1
+
+    puts 'get firefox UA...'
+    firefox
+    puts "sleeping... (#{sleep_time}s)"
+    sleep 1
+
+    puts 'get safari UA...'
+    safari
+    puts "sleeping... (#{sleep_time}s)"
+    sleep 1
+
+    puts 'get edge UA...'
+    edge
+  end
+
+  private
 
   def edge
     page = @agent.get("#{BASE_URL}/edge")
@@ -62,19 +88,23 @@ class LatestUserAgents # rubocop:todo Style/Documentation
   end
 end
 
+def print_helper(section)
+  puts '/' * 15 + " #{section} " + '/' * 15
+end
+
+print_helper('Setup')
 agent = LatestUserAgents.new
 
-puts '====== Chrome ======'
-agent.chrome.each { |key, value| p "#{key}: #{value}" }
-sleep 1
+print_helper('Run')
 
-puts '====== Firefox ======'
-agent.firefox.each { |key, value| p "#{key}: #{value}" }
-sleep 1
+agent.run
 
-puts '====== Safari ======'
-agent.safari.each { |key, value| p "#{key}: #{value}" }
-sleep 1
+print_helper('Result')
+agent.user_agents.each do |blowser, value|
+  puts "===== #{blowser} ====="
+  value.each do |platform, user_agent|
+    puts "#{platform}: #{user_agent}"
+  end
+end
 
-puts '====== Edge ======'
-agent.edge.each { |key, value| p "#{key}: #{value}" }
+print_helper('Done')
