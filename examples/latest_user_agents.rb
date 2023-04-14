@@ -2,10 +2,10 @@
 
 require 'mechanize'
 
-BASE_URL = 'https://www.whatismybrowser.com/guides/the-latest-user-agent'
-
 class LatestUserAgents
   attr_reader :user_agents
+
+  BASE_URL = 'https://www.whatismybrowser.com/guides/the-latest-user-agent'
 
   def initialize
     @agent = Mechanize.new.tap { |a| a.user_agent_alias = 'Mac Firefox' }
@@ -88,23 +88,6 @@ class LatestUserAgents
   end
 end
 
-def print_helper(section)
-  puts '/' * 15 + " #{section} " + '/' * 15
-end
-
-print_helper('Setup')
 agent = LatestUserAgents.new
-
-print_helper('Run')
-
 agent.run
-
-print_helper('Result')
-agent.user_agents.each do |blowser, value|
-  puts "===== #{blowser} ====="
-  value.each do |platform, user_agent|
-    puts "#{platform}: #{user_agent}"
-  end
-end
-
-print_helper('Done')
+p agent.user_agents
